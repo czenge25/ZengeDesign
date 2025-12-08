@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZengeDesign - Design Writing Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .portfolio-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .item-content {
+            padding: 2rem;
+        }
+
+        .item-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .item-content .meta {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-content p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 2rem;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content .meta {
+            color: #667eea;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .modal-content .full-text {
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .modal-content .full-text h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .modal-content .full-text h4 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #667eea;
+        }
+
+        .modal-content .full-text ul, 
+        .modal-content .full-text ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content .full-text li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ZengeDesign</div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Design Writing Portfolio</h1>
+        <p>Crafting accessible, user-centered design solutions through thoughtful research, technical documentation, and inclusive storytelling.</p>
+        <p style="margin-top: 1.5rem; font-size: 1rem; color: #666; max-width: 800px; margin-left: auto; margin-right: auto;">This portfolio showcases work from a project with the Envision Unlimited Rose Center in Chicago to address challenges in their papermaking process. The drying process at the Rose Center, a nonprofit organization that supports people with disabilities, creates safety hazards, takes a long time to complete, and is weather-dependent.</p>
+    </section>
+
+    <section class="portfolio-grid" id="portfolio">
+        <div class="portfolio-item" onclick="openModal('modal1')">
+            <div class="item-image">01</div>
+            <div class="item-content">
+                <h3>Accessible Papermaking Drying Process</h3>
+                <div class="meta">Technical Documentation • Rose Center Project</div>
+                <p>Designing an accessible, time and weather-resistant drying process that minimizes water spillage and reduces drying time to less than 48 hours for users with varying physical and cognitive abilities.</p>
+            </div>
+        </div>
+
+        <div class="portfolio-item" onclick="openModal('modal2')">
+            <div class="item-image">02</div>
+            <div class="item-content">
+                <h3>A Review of Art Therapy Practices for Individuals with Disabilities</h3>
+                <div class="meta">Literature Review • Research Analysis</div>
+                <p>Exploring how art therapy supports individuals with intellectual and developmental disabilities, emphasizing the importance of preserving hands-on experiences while adapting to diverse accessibility needs.</p>
+            </div>
+        </div>
+
+        <div class="portfolio-item" onclick="openModal('modal3')">
+            <div class="item-image">03</div>
+            <div class="item-content">
+                <h3>Instructions for Using The Drying Box</h3>
+                <div class="meta">User Guide • Step-by-Step Process</div>
+                <p>Comprehensive step-by-step instructions for setup, loading, activation, deactivation, and unloading of The Drying Box, designed for users with varying levels of mobility and fine motor skills.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal 1 -->
+    <div id="modal1" class="modal" onclick="closeModal('modal1')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal('modal1')">&times;</span>
+            <h2>Accessible Papermaking Drying Process</h2>
+            <div class="meta">Technical Documentation • Rose Center Project</div>
+            <div class="full-text">
+                <h3>Users and Requirements</h3>
+                <p>The primary goal of this project is to design and implement an improved papermaking drying process for the Rose Center. Due to the reasons previously stated in the Introduction, such as water spillage, slow drying time, and inaccessibility to those with upper-body mobility issues, this process requires a fix. This new solution must improve the drying process to do these things:</p>
+                <ul>
+                    <li>Be weather-resistant</li>
+                    <li>Reduce drying time</li>
+                    <li>Maintain accessibility to all current and potential users</li>
+                    <li>Promote sustainability through the reuse of water pressed from drying paper</li>
+                </ul>
+                
+                <p>The system must fully dry a batch of paper in less than forty-eight hours. The drying process must also be weather-resistant, functioning effectively regardless of outside temperatures and weather conditions. The system must also include a way to efficiently capture water pressed from the paper in the drying box, thus minimizing water spillage onto the surrounding floor. This water must be collected in a manner that facilitates easy reuse, supporting the sustainability goals of the Rose Center.</p>
+                
+                <p>These metrics define success for the project:</p>
+                <ul>
+                    <li>Adhering to the budget constraint</li>
+                    <li>Meeting the specific needs of the Rose Center's unique user base</li>
+                    <li>Varying physical and mental abilities</li>
+                </ul>
+                
+                <p>The budget for this project is $100, which can be stretched, if needed, to $150. This is a necessary consideration for this project, given that the client is a nonprofit organization, where the cost of production is crucial to consider, due to the tight funding constraints of this kind of firm.</p>
+                
+                <p>This designed solution is centered on the target users, the papermaking participants of the Rose Center. The users of the drying box at the Rose Center are people of all ages, but largely those between the ages of thirty and sixty. These users have a range of disabilities, including limited mobility, reduced dexterity, and cognitive impairments. As a result, many users have specific needs that must be considered when evaluating a change to the papermaking process.</p>
+                
+                <p>The operation of the drying box must also require minimal physical strength, including loading, activating, and unloading the paper. All user interaction points, such as latches, buttons, doors, and cranks, must be operable by individuals with limited fine motor skills. The operation of the drying box must also be simple and intuitive, involving minimal steps so that anyone can be easily trained to use the system. Additionally, the drying box must be fully accessible to users with mobility aids such as wheelchairs and crutches, and not hinder the movement of those with such devices through the space by occupying a position that is far away from regular walkways while staying within reach.</p>
+                
+                <p>The drying box is evaluated based on its accessibility, ease of use, and safety for users with significant mobility, dexterity, and cognitive impairments, while effectively reducing paper drying time to less than forty-eight hours, containing water pressed during drying, and allowing for water reuse.</p>
+                
+                <h3>Project Definition</h3>
+                <h4>Mission Statement</h4>
+                <p>To design an accessible time and weather-resistant drying process that minimizes the amount of water spilled on the floor and reduces the drying time to less than 48 hours.</p>
+                
+                <h4>Project Deliverables</h4>
+                <ul>
+                    <li>A final report (digital copy)</li>
+                    <li>Presentation and poster during DTC Project Expo</li>
+                    <li>A final prototype</li>
+                </ul>
+                
+                <h4>Design Constraints</h4>
+                <ul>
+                    <li>Materials for the final prototype must be within the allocated team budget ($100-$150)</li>
+                    <li>Design must be accessible to users with wheelchairs or fine motor skill issues</li>
+                    <li>May not use heating elements as they pose a possible fire hazard</li>
+                </ul>
+                
+                <h4>User Profiles</h4>
+                <p>Members of the Rose Center that are involved in the papermaking process consist of people of all ages. These users have upper body mobility but have varying levels of fine motor skills which could pose challenges in using a design that requires such.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div id="modal2" class="modal" onclick="closeModal('modal2')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal('modal2')">&times;</span>
+            <h2>A Review of Art Therapy Practices for Individuals with Disabilities</h2>
+            <div class="meta">Literature Review • By Cameron Zenge • 9/22/25</div>
+            <div class="full-text">
+                <p>The firm, the Envision Unlimited Rose Center, is a care facility for those with developmental and intellectual disabilities of all ages. The firm utilizes art therapy as a way of providing care to these individuals with crafts such as papermaking. There is a myriad of research supporting this approach towards assisting people with various disabilities.</p>
+                
+                <h3>[1] Interactive Digital Art for Individuals with Intellectual Disabilities</h3>
+                <p><em>Albrecht, Lindsey, et al. "Interactive Digital Art for Individuals with Intellectual Disabilities." Journal of Intellectual Disabilities, vol. 26, no. 2, Jun. 2022, pp. 442–54.</em></p>
+                
+                <p>This publication analyzes the use of interactive digital art as an alternative to traditional art therapy for those with intellectual and developmental disabilities. The paper cites other research to state some pertinent facts: In 2000, the United States had a prevalence rate of 2 to 3 percent of the population with intellectual and developmental disabilities. The paper also states that these numbers are on the rise. The research states that the use of technology like iPads can be used as an opportunity to teach people about how to use touch screen technology, as well as giving them alternative forms of communication. One person in particular showed that they were much more able to express themselves using digital paint technology, but they were found to withdraw more when the focus came too close to reality. It was also found by this study that these digital art forms could potentially have social benefits, as those with intellectual disabilities may struggle with social interaction, and this medium can potentially remove some of the awkwardness of typical in-person contact. The paper also cites another study, which states that individuals with an intellectual disability require some sensory experience to fully process the art they're making. Also, the importance of seeing progress made in real time is important to the experience of making art.</p>
+                
+                <p>This literature review relates to my research because it examines an alternative to the current physical creation of art in use at the Envision Unlimited Rose Center. Although the organization's problem stems from a part of the physical art creation process, it should be considered by the client to potentially eliminate this problem altogether by switching to a more experimental digital medium of art therapy. This would fully eliminate the drying problem of papermaking, yet depending on the resources of the establishment, it may or may not be entirely feasible and requires further research to determine this solution's practicality. It also provides some valuable information regarding the background on the need for organizations such as the client in addressing the current problems regarding aid for those with disabilities: intellectual and other related conditions. This broader perspective reinforces the importance of accessible yet adaptable therapeutic art practices while framing the client's current problem within a larger conversation regarding how organizations can evolve their methods to better serve the diverse needs of the population they serve. Ultimately, this connection between this research and the client's challenges shows the need for exploration of alternative media that are able to maintain the therapeutic nature of art while addressing potential barriers to participation for those with physical disabilities.</p>
+                
+                <h3>[2] Exploring Relationships through Art Therapy for Children with Specific Learning Disabilities</h3>
+                <p><em>Greenboim-Zimchoni, Adi. "Exploring Relationships through Art Therapy for Children with Specific Learning Disabilities." International Journal of Art Therapy, vol. 30, no. 3, Jul. 2025, pp. 138–146.</em></p>
+                
+                <p>This paper explains research conducted that looks into the way in which art therapy offers a way of understanding the experiences of those with specific learning disabilities. The researchers conducted three sessions at the homes of the children with specific learning disabilities and had them create four drawings that symbolized their experiences and relationships with individuals close to them, like their friends, family, teachers, and even themselves. The conductors of the experiment told the children to create these different artworks in a certain order and found that the children did not necessarily do them in that same order, which they hypothesize to be a result of unconscious rebellion and some broader complex relationship with rules based on another publication's findings using a similar testing group. The children created their art and then were able to verbally explain it to the researchers. The children communicated their feelings towards various topics through their artwork. Many children expressed overly positive themes of trusting their parents and heavily emphasized their importance in supporting them. The children also acknowledged their teachers' kindness and showed a genuine desire to receive help from them. They also tended to show more negative ideas of conflict with their friends. They also conveyed very complex ideas of struggles within themselves. The paper concludes from its findings that the use of art therapy in children can be useful in aiding teachers and family members to better understand their struggles and experiences.</p>
+                
+                <p>This publication pertains to my research very directly through my focus on art therapy's role in the lives of those with disabilities. Although this specific article only focuses on art therapy for those with specific learning disabilities, it is still pertinent as the client's customer base includes children with specific learning disabilities. This research heavily supports the idea of our research that our final solution must be able to continue to include the users of the papermaking process in the process itself without considerable automation. The process itself is therapeutic and offers an alternative form of expression for those involved. This insight will help us to ultimately create a solution for the client that does not take away from the helpful aspects of the papermaking process while improving the drying process in some way. It also more directly relates to my broader research regarding art therapy's role in the lives of those with disabilities through the way in which art therapy seemed to have some sort of positive impact on those involved. Although the sample size is small in this study and the paper does acknowledge the need for further research on this topic, it is solid evidence that art therapy is something that should continue to be utilized in organizations such as the Envision Unlimited Rose Center.</p>
+                
+                <h3>[3] 'Being Attentive': Art Therapy for Adults with Intellectual Disabilities</h3>
+                <p><em>Harpazi, Shir, et al. "'Being Attentive': Art Therapy for Adults with Intellectual Disabilities." International Journal of Art Therapy, May 2024, pp. 1–10.</em></p>
+                
+                <p>This study examines how art therapists perceive and practice art therapy with adults who have mild to moderate intellectual disabilities. With interviews and focus groups of 18 therapists, this study addresses the idea of being attentive to clients' individual needs, which arose as the central theme involved in the therapists' work. This research found that there is a lot of subtle messaging found in the clients' art: with therapy ranging from rigid and structured activities to open artistic exploration, nonverbal communication and symbolism are ever present, as well as finding that small changes in artistic expression often symbolize larger, meaningful shifts in the mindset of the clients. Also, the study found that the work of art therapists is challenging in itself, with lots of work and patience required to do the job: therapists often struggle with difficulties due to clients' emotional regulation issues, limited symbolic thinking, oftentimes slow or sluggish progress, as well as their own feelings of doubt and frustration. These therapists often rely on teamwork with institutional staff and professional supervision to remain well in their own work. The research also emphasizes the importance of art therapy for clients as both a medium for expression, particularly for those with nontraditional forms of communication, and a tool for building trusting relationships with staff as a form of bonding.</p>
+                
+                <p>This relates to my research because it offers a new perspective on the process of art therapy that revolves around the experience of the staff involved in administering the therapy for clients. The mental struggles of staff often go unseen, as the focus of art therapy is generally on the clients undergoing the process, even though the workers are just as involved. With this in mind, it is important to acknowledge how any new solution to the organization that involves potentially teaching clients how to use complicated machinery or other methods of drying paper can be costly for the employees involved in doing so. As such, it could be beneficial for someone outside of the organization, potentially including the DTC group itself, to partake in the process of transitioning the clients to using whatever new process may arise. This could also be avoided altogether, however, by simply creating a solution that is more nondisruptive to the current process and requires little to no new teaching for the clients to become familiar with the new process whatsoever. This new viewpoint helps highlight the idea that a balance between automation, efficiency, and ease of implementation is paramount in the ideation of a new drying procedure in the papermaking activity at the Envision Unlimited Rose Center.</p>
+                
+                <h3>[4] Divergent Care: Disability-Affirming Art Therapy Program Design</h3>
+                <p><em>Paustian, Jamisen. "Divergent Care: Disability‐Affirming Art Therapy Program Design for Neurodivergent Children and Adolescents in Therapeutic Day Schools." Diversity & Inclusion Research, vol. 2, no. 2, Apr. 2025, p. e70015.</em></p>
+                
+                <p>This paper describes the author's experiences designing and implementing a group therapy program. The research was conducted at a therapeutic day school with neurodivergent students. It used qualitative research methods, program design, and participatory action research. The author, a neurodivergent clinician in training, co-created the program with the students involved, collecting notes and verbal feedback to be used as data. The study's primary focus was on how neurodivergent-informed and disability-affirming practices can be used to co-create art therapy programs in therapeutic schools such as the one involved. The paper introduces a "Divergent Care" model that emphasizes disability-affirming, neurodivergent-informed, relational, reciprocal, experiential, and dynamic care. This approach primarily focuses on incorporating neurodivergent voices into care programming design to promote inclusive communities of collective belonging. A byproduct of the students' ability to create their own programming was found to be an increased desire to learn as they were able to choose certain topics they were collectively interested in and thus were more eager to learn about. The study involved 15 neurodivergent students, aged 10 to 18, in a therapeutic high school in Chicago. In the group, student-led activities and decision-making were successful and increased student engagement, enthusiasm, and a sense of agency over their care. The paper concludes by affirming that neurodivergent voices in the creation of care programs could lead to less neurotypical-enforcing interventions and more relational, community-based approaches to collective care and identity.</p>
+                
+                <p>This publication pertains to my research in that it addresses the fact that a discourse with the community of users of the papermaking process could be useful in creating a solution to the drying process. By engaging in conversation with those who are actually going to be using some eventual solution, the task of guessing as to how the users will feel about the new solution is taken off the table and should ultimately end up pleasing all parties involved, including the stakeholders and client, provided that they are actively part of this dialogue. It also relates to another one of my sources, [3, 5] in which the idea of centering the voices of those with disabilities, therapists, and caregivers can offer a holistic viewpoint of the problem that can lead to an outcome of the project that preserves the therapeutic and expressive nature of the current art therapy at the Envision Unlimited Rose Center while still addressing logistical and wellness concerns. This also opens up the idea that communication with individuals on the client's side should be upheld throughout the entire design process so as not to make any misguided steps in creating a solution to the problem. This also relates to the broader idea of my research by exploring alternative solutions to creating art therapy programs for those with disabilities.</p>
+                
+                <h3>[5] Art Therapy and Disability Studies</h3>
+                <p><em>Yi, Chun-shan (Sandie), and Catherine Hyland Moon. "Art Therapy and Disability Studies." Art Therapy, vol. 37, no. 2, Apr. 2020, pp. 59–61.</em></p>
+                
+                <p>This editorial examines the intersection of art therapy and disability studies and highlights the need for a shift in how disability is understood within the field of art therapy. The authors argue that disability studies are often done by those looking into the world of disability and instead should be focused on the voices and lived experiences of those with disabilities. This piece reflects on the personal experiences of coeditors. One author, Chun-shan Yi, describes how her own physical differences were historically romanticized, which led to a feeling of internalized ableism until she connected with other disabled activists and came to embrace her disability as part of her personal identity. Another author, Catherine Hyland Moon, reflects on professional encounters that led her to discover structural inequalities in treatment settings, noting how ableist hierarchies often exist invisibly in the mental health field. Both authors stress the importance of recognizing disability not as a binary, but rather as a more fluid spectrum shaped by cultural and social dynamics. The editorial highlights three themes where disability studies can enrich art therapy practice. First, structural oppression is identified wherein art therapy has traditionally positioned disability within rehabilitation and medical frameworks, which risk reinforcing ableism by treating disability as a personal problem that necessitates some sort of fix. Second, intersectionality is recognized and discussed such that disabled people often experience layered discrimination when disability intersects with other marginalized identities in groups such as race, gender, sexuality, and class. Third, intra-professional stigma is acknowledged and described by the fact that many art therapists have lived experiences of disability or mental health struggles, but stigma towards these issues often discourages open dialogue. Ultimately, this publication highlights how art therapists' voices are too often silenced, even though their perspectives are crucial for advancing their field.</p>
+                
+                <p>This piece is important for my research because it discusses the way in which the current discourse regarding art therapy is inherently flawed in understanding the struggles of those with disabilities. My research on the broader element of art therapy used as a form of treatment for those with disabilities reinforces the arguments made in this paper. Although the research I have examined regarding this topic has come from a variety of technical perspectives, there has not been a large emphasis placed on actually hearing from those with lived experiences with disabilities and how art therapy has affected them in particular. The publications previously explored in my research have taken more of an outside-in perspective of conducting experiments and observing how the participants behave as a result. The idea brought up by this paper is incredibly relevant and provides a new perspective on how this kind of research could be conducted to better understand art therapy in this specific scope of people with disabilities. It also brings up a valid question regarding this research on how reliable the data being interpreted truly is if those involved do not have a particularly major role in expressing their own points of view.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div id="modal3" class="modal" onclick="closeModal('modal3')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal('modal3')">&times;</span>
+            <h2>Instructions for Using The Drying Box</h2>
+            <div class="meta">User Guide • Step-by-Step Process</div>
+            <div class="full-text">
+                <p><em>The following instructions are the steps to follow when using The Drying Box.</em></p>
+                
+                <h3>Setup</h3>
+                <ol>
+                    <li>Place The Drying Box on a table or elevated surface.</li>
+                    <li>Temporarily remove the lid from the box (see Figure 1).</li>
+                </ol>
+                <p><strong>Figure 1:</strong> Remove the lid</p>
+                <img src="./images/image1.jpg" alt="Figure 1: Remove the lid" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                
+                <h3>Loading</h3>
+                <ol>
+                    <li>Place sheets of newly pressed paper inside the device.</li>
+                    <li>Continue this process with all sheets of pressed paper (see Figure 2).</li>
+                    <li>Place the lid on top of all the paper sheets.</li>
+                </ol>
+                <p><strong>Figure 2:</strong> Drying box starting to get loaded with paper</p>
+                <img src="./images/image2.jpg" alt="Figure 2: Drying box starting to get loaded with paper" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                
+                <h3>Activation</h3>
+                <ol>
+                    <li>Clamp the provided f-clamps onto the bottom of the box and the top of the lid by properly positioning them and then repeatedly firmly gripping the handle. Ensure that the clamps are placed inside the holes in the side walls to establish even pressing (see Figure 3).</li>
+                    <li>Continue this process until all 4 clamps have been used (see Figure 4).</li>
+                    <li>Plug the fans into an outlet (see Figure 5).</li>
+                </ol>
+                <p><strong>Figure 3:</strong> Tighten the clamps</p>
+                <img src="./images/image3.jpg" alt="Figure 3: Tighten the clamps" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <p><strong>Figure 4:</strong> Use all 4 clamps</p>
+                <img src="./images/image4.jpg" alt="Figure 4: Use all 4 clamps" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <p><strong>Figure 5:</strong> Plug fans into an outlet</p>
+                <img src="./images/image5.jpg" alt="Figure 5: Plug fans into an outlet" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                
+                <h3>Deactivation</h3>
+                <ol>
+                    <li>Unplug the fans.</li>
+                    <li>Loosen the clamps by pressing in on the lever in front of the handle and clasp (see Figure 6).</li>
+                    <li>Continue this process until all clamps are removed from the device (see Figure 7).</li>
+                </ol>
+                <p><strong>Figure 6:</strong> Press in on the lever to release</p>
+                <img src="./images/image6.png" alt="Figure 6: Press in on the lever to release" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <p><strong>Figure 7:</strong> Remove all clamps</p>
+                <img src="./images/image7.png" alt="Figure 7: Remove all clamps" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                
+                <h3>Unloading</h3>
+                <ol>
+                    <li>Remove the lid from the inside of the box (see Figure 8).</li>
+                    <li>Unload newly dried sheets of paper.</li>
+                    <li>Place the lid back inside the box for storage.</li>
+                </ol>
+                <p><strong>Figure 8:</strong> Remove the lid</p>
+                <img src="./images/image8.jpg" alt="Figure 8: Remove the lid" style="max-width: 60%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+    </script>
+
+    <footer id="contact">
+        <div class="contact-info">
+            <h2>Let's Connect</h2>
+            <p>Interested in collaborating or discussing design? I'd love to hear from you.</p>
+            <p style="margin-top: 1rem; color: #667eea; font-size: 1.1rem;">cszenge@gmail.com</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/cameron-zenge-323ab7302/" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
